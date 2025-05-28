@@ -1,21 +1,25 @@
 const User = require("../../../models/usersModel");
-const loginSchema = require("../../../validation/validator")
+const { loginSchema } = require("../../../validation/validator");
 
-
-const { doHashValidation, generateToken, extractUserInfo } = require("../../../utility/utils");
+const {
+  doHashValidation,
+  generateToken,
+  extractUserInfo,
+} = require("../../../utility/utils");
 
 module.exports = async (req, res) => {
   try {
-    const authToken = req.headers.authorization
-    const { userId, email: userEmail } = extractUserInfo(authToken)
-    if (userId || userEmail) {
+    const authToken = req.headers?.authorization;
+    if (authToken) {
+      const { userId, email: userEmail } = extractUserInfo(authToken);
+      if (userId || userEmail) {
         return res.status(400).json({
-            message: 'User already logged in'
-        })
+          message: "User already logged in",
+        });
+      }
     }
     const { error, value } = loginSchema.validate(req.body);
     if (error) {
-      console.log({ error });
       return res
         .status(401)
         .json({ success: false, message: error.details[0].message });
@@ -34,9 +38,9 @@ module.exports = async (req, res) => {
         message: "Invalid Credentials",
       });
     }
-    const token = generateToken(existingUser)
+    const token = generateToken(existingUser);
     return res
-      .cookie("Authorization", 'Bearer ' + token, {
+      .cookie("Authorization", token, {
         expires: new Date(Date.now() + 8 * 60 * 60 * 1000),
         httpOnly: true,
         secure: true,
