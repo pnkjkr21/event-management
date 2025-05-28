@@ -4,7 +4,8 @@
   "description": "Assessment submission",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "test": "test",
+    "start": "nodemon"
   },
   "author": "Pankaj",
   "license": "ISC",
