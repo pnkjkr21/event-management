@@ -6,6 +6,7 @@ const eventSchema = mongoose.Schema({
   date: { type: Date, required: true },
   location: { type: String, required: [true, "Location is required!"], trim: true },
   capacity: { type: Number, required: [true, "Capacity is required!"] },
+  registeredCount: { type: Number, default: 0 }
 });
 
 module.exports = mongoose.model("Event", eventSchema);
